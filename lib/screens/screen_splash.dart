@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:foodiko/screens/screen_home.dart';
+import 'package:foodiko/screens/screen_login.dart';
 
 class Splash extends StatefulWidget {
   const Splash({Key? key}) : super(key: key);
@@ -18,7 +19,7 @@ class _SplashState extends State<Splash> {
     // TODO: implement initState
     super.initState();
     Timer(Duration(seconds: 3),(){
-      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext bc)=>Homepage()));
+      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext bc)=>LoginPage()));
     });
   }
 

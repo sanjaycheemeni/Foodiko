@@ -1,12 +1,23 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:foodiko/screens/screen_dec_page.dart';
 import 'package:foodiko/screens/screen_splash.dart';
 
 void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+
+ 
+
 
   // This widget is the root of your application.
   @override
@@ -15,7 +26,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: 'ProductSans'),
       title: 'Flutter Demo',
-      home:Splash(),
+      home:Decpage(),
     );
   }
 }
