@@ -9,6 +9,10 @@ class Decpage extends StatefulWidget {
 }
 
 class _DecpageState extends State<Decpage> {
+
+  final _ph =TextEditingController();
+  final _ps = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,6 +69,7 @@ class _DecpageState extends State<Decpage> {
                 child: Padding(
                   padding: const EdgeInsets.only(top: 10),
                   child: TextField(
+                    controller: _ph,
                       decoration: InputDecoration(
                           hintText: 'Mobile no',
                           border:
@@ -84,6 +89,7 @@ class _DecpageState extends State<Decpage> {
                 child: Padding(
                   padding: const EdgeInsets.only(top: 10),
                   child: TextField(
+                    controller: _ps,
                     obscureText: true,
                       decoration: InputDecoration(
                         
@@ -98,6 +104,7 @@ class _DecpageState extends State<Decpage> {
             Padding(
               padding: const EdgeInsets.only(left: 180,top: 20),
               child: OutlinedButton(
+                
         style: OutlinedButton.styleFrom(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
               backgroundColor: Color(0xFF2865d4),
@@ -107,11 +114,17 @@ class _DecpageState extends State<Decpage> {
           'Login',
           style: TextStyle(fontSize: 24,color:Colors.white),
         ),
-        onPressed: () {},
+        onPressed: () {
+          login(_ph.text,_ps.text);
+        },
 ),
             )
             
           ],
         ));
   }
+}
+void login(String ph,String ps){
+  print(ph+" "+ps);
+
 }
