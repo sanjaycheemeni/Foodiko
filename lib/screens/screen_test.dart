@@ -111,10 +111,12 @@ class _SamplePageState extends State<SamplePage> {
       {required String phone,
       required String password,
       required BuildContext context}) async {
+
+        snack_inv_email(context: context);
     await Firebase.initializeApp();
 
     // if (phone.length != 10) {
-    //    snack_wrong_pass(context: context,);
+    //    
     //   return;
     // }
 
@@ -127,14 +129,17 @@ class _SamplePageState extends State<SamplePage> {
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         print('No user found for that email.');
+        snack_wrong_user(context: context,);
+
       } else if (e.code == 'wrong-password') {
         print('Wrong password provided for that user.');
+
       }
     }
   }
 }
 
-void snack_inv_mob({required BuildContext context,}) {
+void snack_inv_email({required BuildContext context,}) {
   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       backgroundColor: Colors.transparent,
       elevation: 150,
@@ -165,7 +170,7 @@ void snack_inv_mob({required BuildContext context,}) {
                         ),
                       ),
                       Text(
-                        "Invalid mobile no.",
+                        "Invalid email id.",
                         style: TextStyle(
                           fontSize: 12,
                           fontFamily: 'ProductSans',
@@ -181,17 +186,19 @@ void snack_inv_mob({required BuildContext context,}) {
           ),
           Positioned(
             bottom: 10,
+            left: 10,
             child: Stack(
               alignment: Alignment.center,
               children: [
                 SvgPicture.asset(
-                  "img/mobile.svg",
-                  height: 40,
-                  width: 40,
+                  "img/email.svg",
+                  height: 32,
+                  width: 32,
                   color: Color(0xFF801336),
                 ),
                 Positioned(
-                  bottom: 16,
+                  bottom: -1,
+                  left: 18,
                   child: SvgPicture.asset(
                     "img/fail.svg",
                     color: Colors.white,
@@ -253,6 +260,7 @@ void snack_wrong_user({required BuildContext context,}) {
           ),
           Positioned(
             bottom: 10,
+            left: 2,
             child: Stack(
               alignment: Alignment.center,
               children: [
