@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:foodiko/screens/screen_dec_page.dart';
 import 'package:foodiko/screens/screen_home.dart';
 import 'package:foodiko/screens/screen_login.dart';
+import 'package:foodiko/screens/screen_register.dart';
 import 'package:foodiko/screens/screen_splash.dart';
 import 'package:foodiko/screens/screen_test.dart';
 
@@ -30,7 +31,7 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: 'ProductSans'),
       title: 'Flutter Demo',
-      home:Homepage(),
+      home:Splash(),
     );
   }
 }
