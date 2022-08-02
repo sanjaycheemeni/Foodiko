@@ -72,7 +72,7 @@ class Homepage extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(left: 30, bottom: 5, top: 5),
               child: Text(
-                'Hi Sanju!',
+                'Hi Kevin!',
                 style: TextStyle(fontSize: 20, color: t_clr),
               ),
             ),
@@ -91,7 +91,7 @@ class Homepage extends StatelessWidget {
                     //color: Colors.green,
                     margin: EdgeInsets.only(left: 15, top: 12),
                     child: Text(
-                      "Enjoy food with\nyour freinds!",
+                      "Enjoy food with\nyour friends!",
                       style: TextStyle(
                           fontSize: 18,
                           color: Colors.white,
