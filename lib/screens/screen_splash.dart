@@ -1,9 +1,12 @@
 import 'dart:async';
+import 'dart:isolate';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
 import 'package:foodiko/screens/screen_home.dart';
 import 'package:foodiko/screens/screen_login.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Splash extends StatefulWidget {
   const Splash({Key? key}) : super(key: key);
@@ -16,11 +19,10 @@ class _SplashState extends State<Splash> {
   @override
   void initState() {
     // TODO: implement initState
+
+    isUserLoggedIn();
     super.initState();
-    Timer(Duration(seconds: 5), () {
-      Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (BuildContext bc) => LoginPage()));
-    });
+    
   }
 
   @override
@@ -64,5 +66,27 @@ class _SplashState extends State<Splash> {
         ],
       ),
     ));
+  }
+
+
+  Future<void> isUserLoggedIn()async{
+
+    final sp = await SharedPreferences.getInstance();
+    final isLogged = sp.getBool('IS_LOGGED');
+    print(isLogged);
+
+    Future.delayed(Duration(seconds:3));
+
+    if (isLogged==null || isLogged==false){
+      print('loginnn');
+        Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (BuildContext bc) => LoginPage()));
+    }
+    else{
+      print('home');
+        Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (BuildContext bc) => Homepage()));
+    }
+
   }
 }

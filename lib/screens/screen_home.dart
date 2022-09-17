@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:foodiko/screens/screen_profile.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 class Homepage extends StatelessWidget {
   const Homepage({Key? key}) : super(key: key);
@@ -7,15 +9,20 @@ class Homepage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final clr = Color.fromARGB(255, 26, 26, 26);
+    final clr = Color.fromARGB(255, 255, 255, 255);
     final t_clr = Color.fromARGB(255, 135, 177, 255);
-    final s_blk = Color.fromARGB(255, 37, 37, 37);
-    final s_blk2 = Color.fromARGB(255, 46, 46, 46);
+    final s_blk = Color.fromARGB(255, 238, 238, 238);
+    final s_blk2 = Color.fromARGB(255, 190, 190, 190);
+
+
+
+  var box =  Hive.openBox('testBox');
+  // var str = box.get()
 
     return Scaffold(
       floatingActionButton: FloatingActionButton.extended(
-        backgroundColor: t_clr,
-        foregroundColor: Colors.black,
+        //backgroundColor: C,
+        foregroundColor: Color.fromARGB(255, 255, 255, 255),
         onPressed: () {
           // Respond to button press
           print('fab clicked');
@@ -60,10 +67,16 @@ class Homepage extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                           color: t_clr),
                     ),
-                    SvgPicture.asset("img/user_round.svg",
-                        width: 20,
-                        height: 20,
-                        color: Color.fromARGB(255, 204, 204, 204))
+                    new GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (BuildContext bc) => ProfilePage()));
+                      },
+                      child: SvgPicture.asset("img/user_round.svg",
+                          width: 20,
+                          height: 20,
+                          color: Color.fromARGB(255, 204, 204, 204)),
+                    )
                   ]),
             ),
             SizedBox(
@@ -72,596 +85,95 @@ class Homepage extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(left: 30, bottom: 5, top: 5),
               child: Text(
-                'Hi Kevin!',
+                'Hi Abhi!',
                 style: TextStyle(fontSize: 20, color: t_clr),
               ),
             ),
             Container(
+              alignment: Alignment.center,
               width: size.width * .8,
               height: 100,
               margin: EdgeInsets.fromLTRB(20, 0, 20, 10),
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20), color: s_blk),
+                  borderRadius: BorderRadius.circular(20),
+                  color: Color.fromARGB(255, 236, 236, 236)),
               child: Stack(
                 //crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
+                    alignment: Alignment.center,
                     width: 140,
                     height: 50,
                     //color: Colors.green,
-                    margin: EdgeInsets.only(left: 15, top: 12),
+                    //margin: EdgeInsets.only(left: 50, top: 12),
                     child: Text(
-                      "Enjoy food with\nyour friends!",
+                      "No notification",
                       style: TextStyle(
                           fontSize: 18,
-                          color: Colors.white,
+                          color: Color.fromARGB(255, 102, 102, 102),
                           fontWeight: FontWeight.w700),
                     ),
                   ),
-                  Positioned(
-                    left: 70,
-                    top: -10,
-                    child: Image.asset(
-                      'img/friends_prev_ui.png',
-                      // height: 50,
-                      fit: BoxFit.fitWidth,
-                      width: 250,
-                      //color: Color.fromARGB(255, 0, 65, 117),
-                    ),
-                  )
                 ],
               ),
             ),
             Container(
-                height: 90,
-                //color: Colors.green,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Container(
-                      width: 50,
-                      height: 70,
-                      child: Column(children: [
-                        SizedBox(
-                          height: 5,
-                        ),
-                        SvgPicture.asset(
-                          'img/wallet.svg',
-                          height: 30,
-                          width: 30,
-                          color: t_clr,
-                        ),
-                        SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          'Wallet',
-                          style: TextStyle(color: Colors.white),
-                        )
-                      ]),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        color: s_blk2,
-                      ),
-                    ),
-                    Container(
-                      width: 50,
-                      height: 70,
-                      child: Column(children: [
-                        SizedBox(
-                          height: 5,
-                        ),
-                        SvgPicture.asset(
-                          'img/chat.svg',
-                          height: 30,
-                          width: 30,
-                          color: t_clr,
-                        ),
-                        SizedBox(
-                          height: 15,
-                        ),
-                        Text('Chat', style: TextStyle(color: Colors.white))
-                      ]),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        color: s_blk2,
-                      ),
-                    ),
-                    Container(
-                      width: 50,
-                      height: 70,
-                      child: Column(children: [
-                        SizedBox(
-                          height: 5,
-                        ),
-                        SvgPicture.asset(
-                          'img/friends.svg',
-                          height: 30,
-                          width: 30,
-                          color: t_clr,
-                        ),
-                        SizedBox(
-                          height: 15,
-                        ),
-                        Text('Friends', style: TextStyle(color: Colors.white))
-                      ]),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        color: s_blk2,
-                      ),
-                    ),
-                    Container(
-                      width: 50,
-                      height: 70,
-                      child: Column(children: [
-                        SizedBox(
-                          height: 5,
-                        ),
-                        SvgPicture.asset(
-                          'img/review.svg',
-                          height: 30,
-                          width: 30,
-                          color: t_clr,
-                        ),
-                        SizedBox(
-                          height: 15,
-                        ),
-                        Text('Review', style: TextStyle(color: Colors.white))
-                      ]),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        color: s_blk2,
-                      ),
-                    ),
-                  ],
-                )),
-                Container(margin: EdgeInsets.only(left: 50,right: 50,top:5 ,bottom: 5),width: 200,height: 2,decoration: BoxDecoration(color: s_blk2,borderRadius: BorderRadius.circular(10)),),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                height: 35,
-                width: double.maxFinite,
-                alignment: Alignment.centerLeft,
-                //color: Colors.red,
-                child: ListView(scrollDirection: Axis.horizontal, children: [
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      left: 12,
-                    ),
-                    child: Container(
-                      width: 80,
-                      height: 30,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: t_clr),
-                      child: Text(
-                        'Popular',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      left: 12,
-                    ),
-                    child: Container(
-                      width: 80,
-                      height: 30,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: s_blk2),
-                      child: Text(
-                        'Lunch',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      left: 12,
-                    ),
-                    child: Container(
-                      width: 80,
-                      height: 30,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: s_blk2),
-                      child: Text(
-                        'Breakfast',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                  )
-                ]),
-              ),
+              margin: EdgeInsets.only(left: 50, right: 50, top: 5, bottom: 5),
+              width: 200,
+              height: 2,
+              decoration: BoxDecoration(
+                  color: Color.fromARGB(255, 71, 71, 71),
+                  borderRadius: BorderRadius.circular(10)),
             ),
-            Container(
-              width: 100,
-              height: 130,
-              //color: Colors.red,
-              child: SingleChildScrollView(
-                  padding: EdgeInsets.only(left: 10, right: 15),
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: [
-                      Container(
-                        margin: EdgeInsets.only(left: 15,right: 15),
-                        height: 120,
-                        width: 300,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: s_blk2,
-                        ),
-                        child: Stack(
-                          children: [
-                            Positioned(
-                              child: Text(
-                                'Chicken Biriyani',
-                                style: TextStyle(
-                                    fontSize: 20, color: Colors.white),
-                              ),
-                              left: 140,
-                              top: 20,
-                            ),
-                            Positioned(
-                              child: Text(
-                                'Rs 60',
-                                style: TextStyle(
-                                    fontSize: 15,
-                                    color: Color.fromARGB(255, 180, 180, 180)),
-                              ),
-                              left: 140,
-                              top: 50,
-                            ),
-                            Positioned(
-                              child: Image.asset('img/biriyani.png'),
-                            ),
-                            Positioned(
-                              child: ElevatedButton(
-                                onPressed: () {},
-                                child: const Text('Book now',style: TextStyle(color: Colors.black),),
-                                style: ElevatedButton.styleFrom(
-                                    primary: t_clr,
-                                    fixedSize: const Size(100, 30),
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(50))),
-                              ),
-                              left: 180,
-                              top: 65,
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(left: 15,right: 15),
-                        height: 120,
-                        width: 300,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: s_blk2,
-                        ),
-                        child: Stack(
-                          children: [
-                            Positioned(
-                              child: Text(
-                                'Chappati',
-                                style: TextStyle(
-                                    fontSize: 20, color: Colors.white),
-                              ),
-                              left: 140,
-                              top: 20,
-                            ),
-                            Positioned(
-                              child: Text(
-                                'Rs 12 per Nos ',
-                                style: TextStyle(
-                                    fontSize: 15,
-                                    color: Color.fromARGB(255, 180, 180, 180)),
-                              ),
-                              left: 140,
-                              top: 50,
-                            ),
-                            Positioned(
-                              top: 8,left: 8,
-                              child: Image.asset('img/chapati.png',width: 100,),
-                            ),
-                            Positioned(
-                              child: ElevatedButton(
-                                onPressed: () {},
-                                child: const Text('Book now',style: TextStyle(color: Colors.black),),
-                                style: ElevatedButton.styleFrom(
-                                    primary: t_clr,
-                                    fixedSize: const Size(100, 30),
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(50))),
-                              ),
-                              left: 180,
-                              top: 65,
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(left: 15,right: 15),
-                        height: 120,
-                        width: 300,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: s_blk2,
-                        ),
-                        child: Stack(
-                          children: [
-                            Positioned(
-                              child: Text(
-                                'Meals',
-                                style: TextStyle(
-                                    fontSize: 20, color: Colors.white),
-                              ),
-                              left: 140,
-                              top: 20,
-                            ),
-                            Positioned(
-                              child: Text(
-                                'Rs 22',
-                                style: TextStyle(
-                                    fontSize: 15,
-                                    color: Color.fromARGB(255, 180, 180, 180)),
-                              ),
-                              left: 140,
-                              top: 50,
-                            ),
-                            Positioned(
-                              child: Image.asset('img/meals.png',width: 100,),
-                              top: 8,left: 8,
-                            ),
-                            Positioned(
-                              child: ElevatedButton(
-                                onPressed: () {},
-                                child: const Text('Book now',style: TextStyle(color: Colors.black),),
-                                style: ElevatedButton.styleFrom(
-                                    primary: t_clr,
-                                    fixedSize: const Size(100, 30),
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(50))),
-                              ),
-                              left: 180,
-                              top: 65,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  )),
-            ),
-            Container(
-              // color: Colors.green,
-              padding: EdgeInsets.only(left: 25),
-              // width: 30,
-              height: 20,
-              child: Row(
-                children: [
-                  Text(
-                    'Most ordered food',
-                    style: TextStyle(fontSize: 15, color: t_clr),
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Container(
-                    width: size.width * .5,
-                    height: 2,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(25),
-                      color: s_blk2,
-                    ),
-                  )
-                ],
-              ),
-            ),
-            Container(
-              height: 210,
-              //color: Colors.green,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 0),
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Card(
-                        margin: EdgeInsets.only(left: 25),
-                        color: Colors.transparent,
-                        elevation: 300,
-                        child: Container(
-                          width: 120,
-                          height: 180,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: s_blk2),
-                          child: Column(children: [
-                            Image.asset(
-                              'img/dosa.png',
-                              width: 120,
-                              height: 120,
-                              fit: BoxFit.fitWidth,
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(top: 10, bottom: 10),
-                              width: 95,
-                              height: 40,
-                              decoration: BoxDecoration(
-                                  color: s_blk,
-                                  borderRadius: BorderRadius.circular(10)),
-                              child: Column(
-                                children: [
-                                  Text(
-                                    'Dosa',
-                                    style: TextStyle(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.bold,
-                                        color: t_clr),
-                                  ),
-                                  Text(
-                                    'Rs 12.0',
-                                    style: TextStyle(color: Colors.white),
-                                  )
-                                ],
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                              ),
-                            )
-                          ]),
-                        ),
-                      ),
-                      Card(
-                        margin: EdgeInsets.only(left: 25),
-                        color: Colors.transparent,
-                        elevation: 300,
-                        child: Container(
-                          width: 120,
-                          height: 180,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: s_blk2),
-                          child: Column(children: [
-                            Image.asset(
-                              'img/dosa.png',
-                              width: 120,
-                              height: 120,
-                              fit: BoxFit.fitWidth,
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(top: 10, bottom: 10),
-                              width: 95,
-                              height: 40,
-                              decoration: BoxDecoration(
-                                  color: s_blk,
-                                  borderRadius: BorderRadius.circular(10)),
-                              child: Column(
-                                children: [
-                                  Text(
-                                    'Dosa',
-                                    style: TextStyle(
-                                        fontSize: 15,
-                                        color: t_clr,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    'Rs 12.0',
-                                    style: TextStyle(color: Colors.white),
-                                  )
-                                ],
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                              ),
-                            )
-                          ]),
-                        ),
-                      ),
-                      Card(
-                        margin: EdgeInsets.only(left: 25),
-                        color: Colors.transparent,
-                        elevation: 300,
-                        child: Container(
-                          width: 120,
-                          height: 180,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: s_blk2),
-                          child: Column(children: [
-                            Image.asset(
-                              'img/dosa.png',
-                              width: 120,
-                              height: 120,
-                              fit: BoxFit.fitWidth,
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(top: 10, bottom: 10),
-                              width: 95,
-                              height: 40,
-                              decoration: BoxDecoration(
-                                  color: s_blk,
-                                  borderRadius: BorderRadius.circular(10)),
-                              child: Column(
-                                children: [
-                                  Text(
-                                    'Dosa',
-                                    style: TextStyle(
-                                        fontSize: 15,
-                                        color: t_clr,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    'Rs 12.0',
-                                    style: TextStyle(color: Colors.white),
-                                  )
-                                ],
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                              ),
-                            )
-                          ]),
-                        ),
-                      ),
-                      Card(
-                        margin: EdgeInsets.only(left: 25, right: 15),
-                        color: Colors.transparent,
-                        elevation: 300,
-                        child: Container(
-                          width: 120,
-                          height: 180,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: s_blk2),
-                          child: Column(children: [
-                            Image.asset(
-                              'img/dosa.png',
-                              width: 120,
-                              height: 120,
-                              fit: BoxFit.fitWidth,
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(top: 10, bottom: 10),
-                              width: 95,
-                              height: 40,
-                              decoration: BoxDecoration(
-                                  color: s_blk,
-                                  borderRadius: BorderRadius.circular(10)),
-                              child: Column(
-                                children: [
-                                  Text(
-                                    'Dosa',
-                                    style: TextStyle(
-                                        fontSize: 15,
-                                        color: t_clr,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    'Rs 12.0',
-                                    style: TextStyle(color: Colors.white),
-                                  )
-                                ],
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                              ),
-                            )
-                          ]),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            )
+            //===================
+            tab(img: "img/wallet.svg", name: "Wallet"),
+            tab(img: "img/menu.svg", name: "My Orders"),
+            tab(img: "img/friends.svg", name: "My Friends"),
+            tab(img: "img/review.svg", name: "Revies"),
+            
           ],
         ),
       ),
     );
+  }
+
+  Container tab({required String img,required String name}){
+    return Container(
+              height: 50,
+              margin: EdgeInsets.fromLTRB(25, 15, 25, 10),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Color.fromARGB(255, 230, 230, 230),
+                boxShadow: [
+                  BoxShadow(
+                      spreadRadius: 0,
+                      blurRadius: 2,
+                      color: Color.fromARGB(255, 34, 34, 34).withOpacity(0.1),
+                      offset: const Offset(0, 10))
+                ],
+              ),
+              alignment: Alignment.center,
+              child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+                SizedBox(
+                  width: 15,
+                ),
+                SvgPicture.asset(
+                  img,
+                  height: 30,
+                  width: 30,
+                  color: Color.fromARGB(255, 3, 14, 71),
+                ),
+                SizedBox(
+                  width: 100,
+                ),
+                Text(
+                  name,
+                  style: TextStyle(
+                      color: Color.fromARGB(255, 66, 66, 66),
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold),
+                )
+              ]),
+            );
   }
 }

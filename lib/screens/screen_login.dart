@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:foodiko/screens/screen_home.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -16,20 +17,28 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final clr = Color.fromARGB(255, 26, 26, 26);
+  final clr = Color.fromARGB(255, 255, 255, 255);
   final t_clr = Color.fromARGB(255, 135, 177, 255);
-  final s_blk = Color.fromARGB(255, 37, 37, 37);
-  final s_blk2 = Color.fromARGB(255, 71, 71, 71);
+  final s_blk = Color.fromARGB(255, 226, 226, 226);
+  final s_blk2 = Color.fromARGB(255, 224, 224, 224);
 
   bool isLoading = false;
   bool success = false;
 
   @override
   Widget build(BuildContext context) {
+
+
+    // if(islogged()){
+    //   Navigator.of(context).pushReplacement(
+    //       MaterialPageRoute(builder: (BuildContext bc) => Homepage()));
+    // }
+
+
     String _emailid = "0", _pass = "";
 
     return Scaffold(
-      backgroundColor: s_blk,
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
@@ -64,10 +73,10 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   Positioned(
                     top: 110,
-                    right: 1,
+                    right: 15,
                     child: 
                   Image.asset('img/back_login.png',
-                  height: 200,width: 150,color: Colors.white,)
+                  height: 200,width: 150,color: Color.fromARGB(255, 29, 29, 29),)
                   )
                 ],
               ),
@@ -83,10 +92,10 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 child: TextField(
                   cursorColor: Colors.white,
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(color: Color.fromARGB(255, 8, 8, 8)),
                   decoration: InputDecoration(
                       hintStyle:
-                          TextStyle(color: Color.fromARGB(255, 143, 143, 143)),
+                          TextStyle(color: Color.fromARGB(255, 179, 179, 179)),
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8.0),
                           borderSide: BorderSide.none),
@@ -111,8 +120,8 @@ class _LoginPageState extends State<LoginPage> {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: TextField(
-                  style: TextStyle(color: Colors.white),
-                  cursorColor: Colors.white,
+                  style: TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
+                  cursorColor: Color.fromARGB(255, 37, 37, 37),
                   onChanged: (String val) {
                     _pass = val;
                     print(val);
@@ -120,7 +129,7 @@ class _LoginPageState extends State<LoginPage> {
                   obscureText: true,
                   decoration: InputDecoration(
                     hintStyle:
-                        TextStyle(color: Color.fromARGB(255, 143, 143, 143)),
+                        TextStyle(color:Color.fromARGB(255, 179, 179, 179)),
                     hintText: 'Password',
                     border: OutlineInputBorder(
                       borderSide: BorderSide.none,
@@ -137,7 +146,7 @@ class _LoginPageState extends State<LoginPage> {
               width: 240,
               decoration: BoxDecoration(
                   color: isLoading?t_clr.withOpacity(.2):t_clr.withOpacity(1), borderRadius: BorderRadius.circular(8)),
-              child: FlatButton(
+              child: ElevatedButton(
                 onPressed: () {
                   
                   login(emailid: _emailid, password: _pass, context: context);
@@ -150,7 +159,7 @@ class _LoginPageState extends State<LoginPage> {
                   
                   isLoading?'Loading...':'Login',
                   style: TextStyle(
-                    color: Color.fromARGB(255, 0, 0, 0),
+                    color: Color.fromARGB(255, 233, 233, 233),
                     fontSize: 20,
                   ),
                 ),
@@ -171,7 +180,7 @@ class _LoginPageState extends State<LoginPage> {
                   padding: const EdgeInsets.only(left: 10, right: 10),
                   child: Text(
                     'OR',
-                    style: TextStyle(color: Colors.white),
+                    style: TextStyle(color: Color.fromARGB(255, 51, 114, 230)),
                   ),
                 ),
                 Container(
@@ -191,16 +200,16 @@ class _LoginPageState extends State<LoginPage> {
                 borderRadius: BorderRadius.circular(8),
                 border: Border.all(color: t_clr),
               ),
-              child: FlatButton(
+              child: ElevatedButton(
                 onPressed: () {
                   //login(emailid: _emailid, password: _pass, context: context);
                   print("logi");
                   snack_success(context: context);
                 },
                 child: Text(
-                  'Regitster',
+                  'Register',
                   style: TextStyle(
-                    color: t_clr,
+                    color: Colors.white,
                     fontSize: 20,
                   ),
                 ),
@@ -209,27 +218,7 @@ class _LoginPageState extends State<LoginPage> {
             SizedBox(
               height: 65,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Column(
-                  children: [
-                    Text(
-                      'foodiko',
-                      style: TextStyle(
-                          color: t_clr,
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    Text('canteen token management system',
-                    style: TextStyle(
-                          color: Color.fromARGB(255, 136, 136, 136),
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold),)
-                  ],
-                )
-              ],
-            )
+            
           ],
         ),
       ),
@@ -262,7 +251,10 @@ class _LoginPageState extends State<LoginPage> {
         .signInWithEmailAndPassword(email: emailid, password: password);
 
     print("login success...");
+    final sp = await SharedPreferences.getInstance();
+    final isLogged = sp.setBool('IS_LOGGED',true);
     snack_success(context: context);
+    
     Timer(Duration(seconds: 2), () {
       Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (BuildContext bc) => Homepage()));
@@ -599,3 +591,15 @@ void snack_wrong_pass({
         ],
       )));
 }
+// loggedIn() async {
+//   SharedPreferences prefs = await SharedPreferences.getInstance();
+//   await prefs.setBool('LOGIN', true);
+//   return;
+// }
+// islogged() async{
+//   SharedPreferences prefs = await SharedPreferences.getInstance();
+//   if("true" == prefs.getString('isLogged')){
+//     return true;
+//   }
+//   return false;
+// }
