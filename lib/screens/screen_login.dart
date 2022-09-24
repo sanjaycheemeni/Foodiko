@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:foodiko/screens/screen_home.dart';
+import 'package:foodiko/screens/screen_register.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
@@ -17,6 +18,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  Color main_clr = Color.fromARGB(255, 82, 119, 187);
   final clr = Color.fromARGB(255, 255, 255, 255);
   final t_clr = Color.fromARGB(255, 135, 177, 255);
   final s_blk = Color.fromARGB(255, 226, 226, 226);
@@ -27,13 +29,10 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-
-
     // if(islogged()){
     //   Navigator.of(context).pushReplacement(
     //       MaterialPageRoute(builder: (BuildContext bc) => Homepage()));
     // }
-
 
     String _emailid = "0", _pass = "";
 
@@ -48,7 +47,6 @@ class _LoginPageState extends State<LoginPage> {
               //color: Colors.red,
               width: double.maxFinite,
               child: Stack(
-                
                 children: [
                   Positioned(
                     top: 110,
@@ -56,7 +54,7 @@ class _LoginPageState extends State<LoginPage> {
                       'Welcome',
                       style: TextStyle(
                           fontSize: 38,
-                          color: t_clr,
+                          color: main_clr,
                           fontWeight: FontWeight.bold),
                     ),
                   ),
@@ -66,18 +64,20 @@ class _LoginPageState extends State<LoginPage> {
                       'back',
                       style: TextStyle(
                         fontSize: 38,
-                        color: t_clr,
+                        color: main_clr,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
                   Positioned(
-                    top: 110,
-                    right: 15,
-                    child: 
-                  Image.asset('img/back_login.png',
-                  height: 200,width: 150,color: Color.fromARGB(255, 29, 29, 29),)
-                  )
+                      top: 110,
+                      right: 15,
+                      child: Image.asset(
+                        'img/back_login.png',
+                        height: 200,
+                        width: 150,
+                        color: Color.fromARGB(255, 29, 29, 29),
+                      ))
                 ],
               ),
             ),
@@ -129,7 +129,7 @@ class _LoginPageState extends State<LoginPage> {
                   obscureText: true,
                   decoration: InputDecoration(
                     hintStyle:
-                        TextStyle(color:Color.fromARGB(255, 179, 179, 179)),
+                        TextStyle(color: Color.fromARGB(255, 179, 179, 179)),
                     hintText: 'Password',
                     border: OutlineInputBorder(
                       borderSide: BorderSide.none,
@@ -145,19 +145,21 @@ class _LoginPageState extends State<LoginPage> {
               height: 40,
               width: 240,
               decoration: BoxDecoration(
-                  color: isLoading?t_clr.withOpacity(.2):t_clr.withOpacity(1), borderRadius: BorderRadius.circular(8)),
+                  color: isLoading
+                      ? t_clr.withOpacity(.2)
+                      : main_clr.withOpacity(1),
+                  borderRadius: BorderRadius.circular(8)),
               child: ElevatedButton(
+                style: ElevatedButton.styleFrom(primary: main_clr),
                 onPressed: () {
-                  
                   login(emailid: _emailid, password: _pass, context: context);
                   print("logi");
                   setState(() {
-                    isLoading=true;
+                    isLoading = true;
                   });
                 },
                 child: Text(
-                  
-                  isLoading?'Loading...':'Login',
+                  isLoading ? 'Loading...' : 'Login',
                   style: TextStyle(
                     color: Color.fromARGB(255, 233, 233, 233),
                     fontSize: 20,
@@ -197,14 +199,16 @@ class _LoginPageState extends State<LoginPage> {
               height: 40,
               width: 240,
               decoration: BoxDecoration(
+                color: main_clr,
                 borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: t_clr),
+                border: Border.all(color: main_clr),
               ),
               child: ElevatedButton(
+                style: ElevatedButton.styleFrom(primary: main_clr),
                 onPressed: () {
                   //login(emailid: _emailid, password: _pass, context: context);
-                  print("logi");
-                  snack_success(context: context);
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(
+                      builder: (BuildContext bc) => RegisterPage()));
                 },
                 child: Text(
                   'Register',
@@ -218,68 +222,69 @@ class _LoginPageState extends State<LoginPage> {
             SizedBox(
               height: 65,
             ),
-            
           ],
         ),
       ),
     );
   }
+
   Future<void> login(
-    {required String emailid,
-    required String password,
-    required BuildContext context}) async {
-  await Firebase.initializeApp();
+      {required String emailid,
+      required String password,
+      required BuildContext context}) async {
+    await Firebase.initializeApp();
 
- if(!emailid.contains('@') || !emailid.contains('.')){
-   snack_inv_mob(context: context);
-   setState(() {
-     isLoading = false;
-   });
-   
-  return;
- }
- if(password.length<8){
-   snack_wrong_pass(context: context);
-    setState(() {
-     isLoading = false;
-   });return;
- }
-
-
-  try {
-    final credential = await FirebaseAuth.instance
-        .signInWithEmailAndPassword(email: emailid, password: password);
-
-    print("login success...");
-    final sp = await SharedPreferences.getInstance();
-    final isLogged = sp.setBool('IS_LOGGED',true);
-    snack_success(context: context);
-    
-    Timer(Duration(seconds: 2), () {
-      Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (BuildContext bc) => Homepage()));
-    });
-  } on FirebaseAuthException catch (e) {
-    if (e.code == 'user-not-found') {
-      print('No user found for that email.');
-      snack_wrong_user(context: context);
+    if (!emailid.contains('@') || !emailid.contains('.')) {
+      snack_inv_mob(context: context);
       setState(() {
-        
-        isLoading=false;
+        isLoading = false;
       });
 
       return;
-    } else if (e.code == 'wrong-password') {
-      print('Wrong password provided for that user.');
+    }
+    if (password.length < 8) {
       snack_wrong_pass(context: context);
       setState(() {
-        
-        isLoading=false;
+        isLoading = false;
       });
       return;
     }
+
+    try {
+      final credential = await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: emailid, password: password);
+
+      print("login success...");
+      final sp = await SharedPreferences.getInstance();
+      final isLogged = sp.setBool('IS_LOGGED', true);
+      final mail = sp.setString('MAILID', emailid);
+      snack_success(context: context);
+
+      Timer(Duration(seconds: 2), () {
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (BuildContext bc) => Homepage(
+                  mail_id: emailid,
+                )));
+      });
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        print('No user found for that email.');
+        snack_wrong_user(context: context);
+        setState(() {
+          isLoading = false;
+        });
+
+        return;
+      } else if (e.code == 'wrong-password') {
+        print('Wrong password provided for that user.');
+        snack_wrong_pass(context: context);
+        setState(() {
+          isLoading = false;
+        });
+        return;
+      }
+    }
   }
-}
 }
 /*
 
@@ -357,7 +362,6 @@ void snack_success({
                   width: 30,
                   color: Color.fromARGB(255, 255, 255, 255),
                 ),
-               
               ],
             ),
           ),

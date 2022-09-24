@@ -3,16 +3,21 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:foodiko/screens/screen_login.dart';
+import 'package:foodiko/screens/screen_wallet.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({Key? key}) : super(key: key);
+  final mail_id, name;
+  const ProfilePage({Key? key, required this.mail_id, required this.name})
+      : super(key: key);
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  Color main_clr = Color.fromARGB(255, 82, 119, 187);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,7 +43,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   BoxShadow(
                       spreadRadius: 2,
                       blurRadius: 10,
-                      color: Colors.black.withOpacity(0.1),
+                      color:
+                          Color.fromARGB(255, 255, 255, 255).withOpacity(0.1),
                       offset: const Offset(0, 10))
                 ],
                 shape: BoxShape.circle,
@@ -46,51 +52,84 @@ class _ProfilePageState extends State<ProfilePage> {
               child: Image.asset('img/user.png'),
             ),
             const SizedBox(
-              height: 35,
+              height: 25,
             ),
             Column(
               children: [
                 Text(
-                  'Abhi',
+                  widget.name,
                   style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                 ),
-                Text('ID: 123008')
+                SizedBox(
+                  height: 5,
+                ),
+                Text(
+                  widget.mail_id,
+                  style: TextStyle(color: Color.fromARGB(255, 211, 211, 211)),
+                )
               ],
             ),
-            SizedBox(height: 50,),
-           new GestureDetector(
-             onTap: (){},child: Container(alignment: Alignment.center,height: 50,width: 2,decoration: BoxDecoration(borderRadius: BorderRadius.circular(12),color: Color.fromARGB(255, 241, 241, 241)),child: Text("My Wallet",style: TextStyle(color: Color.fromARGB(255, 20, 20, 20)),),),
-           ),SizedBox(height: 15,),
-           new GestureDetector(
-             onTap: (){
-
-
-              logOut();
-
-
-
-             },child: Container(alignment: Alignment.center,height: 50,width: 2,decoration: BoxDecoration(borderRadius: BorderRadius.circular(12),color: Color.fromARGB(255, 247, 100, 90)),child: Text("Logout",style: TextStyle(color: Colors.white),),),
-           ),
+            SizedBox(
+              height: 50,
+            ),
+            new GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (BuildContext bc) => WalletPage()));
+              },
+              child: Container(
+                alignment: Alignment.center,
+                height: 50,
+                width: 2,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    color: Color.fromARGB(255, 241, 241, 241)),
+                child: Text(
+                  "My Wallet",
+                  style: TextStyle(
+                      color: Color.fromARGB(255, 20, 20, 20), fontSize: 20),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            new GestureDetector(
+              onTap: () {
+                logOut();
+              },
+              child: Container(
+                alignment: Alignment.center,
+                height: 50,
+                width: 2,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    color: Color.fromARGB(255, 255, 58, 44)),
+                child: Text(
+                  "Logout",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
           ],
         ),
       ),
     );
   }
 
-  Future<void> logOut() async{
-
+  Future<void> logOut() async {
     final sp = await SharedPreferences.getInstance();
-    sp.setBool('IS_LOGGED', true);
+    //sp.setBool('IS_LOGGED', true);
     sp.clear();
-    
 
     Navigator.pushAndRemoveUntil(
-      context, 
-      MaterialPageRoute(
-        builder: (context) => LoginPage()
-      ), 
-     ModalRoute.withName("/Home")
-    );
-   /// sp.getString(key)
+        context,
+        MaterialPageRoute(builder: (context) => LoginPage()),
+        ModalRoute.withName("/Home"));
+
+    /// sp.getString(key)
   }
 }
