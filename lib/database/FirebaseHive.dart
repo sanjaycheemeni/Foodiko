@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -74,6 +75,29 @@ getWallet() async {
   if (docSnapshot.exists) {
     Map<String, dynamic>? data = docSnapshot.data();
     var value = data?['balance'];
+    return value;
+  } else {
+    return "";
+  }
+}
+
+updateValue(
+    {required colid, required docid, required colname, required value}) async {
+  await Firebase.initializeApp();
+  CollectionReference users = FirebaseFirestore.instance.collection(colid);
+  users.doc(docid).update({
+    colname: value,
+  });
+}
+
+Future<String> getValue(
+    {required colid, required String docid, required String colname}) async {
+  var collection = await FirebaseFirestore.instance.collection('User');
+  var docSnapshot = await collection.doc(docid).get();
+  if (docSnapshot.exists) {
+    Map<String, dynamic>? data = docSnapshot.data();
+    var value = data?[colname];
+    print(value);
     return value;
   } else {
     return "";

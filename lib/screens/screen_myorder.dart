@@ -59,7 +59,7 @@ class MyOrder extends StatelessWidget {
                                   color: Color.fromARGB(255, 240, 240, 240),
                                   child: (true)
                                       ? ListTile(
-                                          title: Text(document['orderid']),
+                                          title: Text(document['name']),
                                           subtitle: Text(
                                             document['status'] == 'DELIVERED'
                                                 ? 'Already Delivered'

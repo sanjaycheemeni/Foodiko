@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:foodiko/screens/screen_bookorder.dart';
 
 class OrderPage extends StatefulWidget {
-  const OrderPage({Key? key}) : super(key: key);
+  final id;
+  const OrderPage({Key? key, required this.id}) : super(key: key);
 
   @override
   State<OrderPage> createState() => _OrderPageState();
@@ -50,6 +52,7 @@ class _OrderPageState extends State<OrderPage> {
                 StreamBuilder<QuerySnapshot>(
                     stream: FirebaseFirestore.instance
                         .collection("Food")
+                        .orderBy('status', descending: false)
                         .snapshots(),
                     builder: ((context, snapshot) {
                       try {
@@ -68,10 +71,19 @@ class _OrderPageState extends State<OrderPage> {
                                   color: Color.fromARGB(255, 240, 240, 240),
                                   child: GestureDetector(
                                     onTap: () {
-                                      print(document['price']);
+                                      Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                              builder: (BuildContext bc) =>
+                                                  AdminBook(
+                                                    id: widget.id,
+                                                    status: document['status'],
+                                                    fname: document['name'],
+                                                    fid: document['foodid'],
+                                                    price: document['price'],
+                                                  )));
                                     },
                                     child: ListTile(
-                                      trailing: Text(document['price']),
+                                      trailing: Text("Rs." + document['price']),
                                       title: Text(document['name']),
                                       leading: Image.asset(
                                         'img/food.png',
