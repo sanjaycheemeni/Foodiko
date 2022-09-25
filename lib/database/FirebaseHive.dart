@@ -36,7 +36,7 @@ getName(String mail) async {
   // final isLogged = sp.setBool('IS_LOGGED', true);
   // final mail = sp.setString('MAILID',emailid);
   final mid = await sp.getString('MAILID');
-  print("mail->" + mid!);
+  //print("mail->" + mid!);
 
   var collection = await FirebaseFirestore.instance.collection('User');
   var docSnapshot = await collection.doc(mid).get();
@@ -55,7 +55,7 @@ getNotify() async {
   if (docSnapshot.exists) {
     Map<String, dynamic>? data = docSnapshot.data();
     var value = data?['content'];
-    print(value);
+    //print(value);
     return value;
   } else {
     print('none');
@@ -68,7 +68,7 @@ getWallet() async {
   // final isLogged = sp.setBool('IS_LOGGED', true);
   // final mail = sp.setString('MAILID',emailid);
   final mid = await sp.getString('MAILID');
-  print("walet of->" + mid!);
+  //print("walet of->" + mid!);
 
   var collection = await FirebaseFirestore.instance.collection('User');
   var docSnapshot = await collection.doc(mid).get();
@@ -92,12 +92,48 @@ updateValue(
 
 Future<String> getValue(
     {required colid, required String docid, required String colname}) async {
-  var collection = await FirebaseFirestore.instance.collection('User');
+  var collection = await FirebaseFirestore.instance.collection(colid);
   var docSnapshot = await collection.doc(docid).get();
   if (docSnapshot.exists) {
     Map<String, dynamic>? data = docSnapshot.data();
     var value = data?[colname];
-    print(value);
+    //print(value);
+    return value;
+  } else {
+    return "";
+  }
+}
+
+getNamebymail(String mail) async {
+  final sp = await SharedPreferences.getInstance();
+  // final isLogged = sp.setBool('IS_LOGGED', true);
+  // final mail = sp.setString('MAILID',emailid);
+  final mid = await sp.getString('MAILID');
+  //print("mail->" + mid!);
+
+  var collection = await FirebaseFirestore.instance.collection('User');
+  var docSnapshot = await collection.doc(mail).get();
+  if (docSnapshot.exists) {
+    Map<String, dynamic>? data = docSnapshot.data();
+    var value = data?['name'];
+    return value;
+  } else {
+    return "";
+  }
+}
+
+getWalletbymail(String mailid) async {
+  final sp = await SharedPreferences.getInstance();
+  // final isLogged = sp.setBool('IS_LOGGED', true);
+  // final mail = sp.setString('MAILID',emailid);
+  final mid = await sp.getString('MAILID');
+  //print("walet of->" + mid!);
+
+  var collection = await FirebaseFirestore.instance.collection('User');
+  var docSnapshot = await collection.doc(mailid).get();
+  if (docSnapshot.exists) {
+    Map<String, dynamic>? data = docSnapshot.data();
+    var value = data?['balance'];
     return value;
   } else {
     return "";

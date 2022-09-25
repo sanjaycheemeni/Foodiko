@@ -5,11 +5,13 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:foodiko/database/FoodikoDatabase.dart';
+import 'package:foodiko/screens/screen_home.dart';
 
 import '../database/FirebaseHive.dart';
 
 class AdminBook extends StatefulWidget {
   String fid, price, fname, status, id;
+
   AdminBook(
       {Key? key,
       required this.fid,
@@ -26,6 +28,7 @@ class AdminBook extends StatefulWidget {
 class _AdminBookState extends State<AdminBook> {
   var ready = false;
   String balance = "00";
+  var isLoading = false;
 
   final total_price = "00";
   @override
@@ -108,14 +111,21 @@ class _AdminBookState extends State<AdminBook> {
                                   : mainClr),
                           onPressed: () {
                             orderConfirm();
+                            setState(() {
+                              isLoading = true;
+                            });
                           },
-                          child: Text(
-                            'Confirm Booking',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                            ),
-                          ),
+                          child: isLoading
+                              ? CircularProgressIndicator(
+                                  color: Colors.white,
+                                )
+                              : Text(
+                                  'Confirm Booking',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                  ),
+                                ),
                         ),
                       ]),
                 ),
@@ -171,17 +181,157 @@ class _AdminBookState extends State<AdminBook> {
     }
   }
 
-  orderConfirm() {
+  orderConfirm() async {
+    print('booking started');
     if (ready) {
-      var i = createOrder(
+      var i = await createOrder(
           mailid: widget.id,
           fname: widget.fname,
           foodid: widget.fid,
           price: widget.price);
+      print('create order done');
 
       if (i == 0) {
-        print('done');
+        snack_success(context: context);
+        Navigator.of(context).pop();
       }
-    } else {}
+    } else {
+      snack_failed(context: context);
+      setState(() {
+        isLoading = false;
+      });
+    }
   }
+}
+
+void snack_success({
+  required BuildContext context,
+}) {
+  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      backgroundColor: Colors.transparent,
+      elevation: 150,
+      content: Stack(
+        children: [
+          Container(
+            padding: EdgeInsets.all(10),
+            height: 60,
+            decoration: BoxDecoration(
+                color: Color.fromARGB(255, 22, 133, 32),
+                borderRadius: BorderRadius.circular(12)),
+            child: Row(
+              children: [
+                const SizedBox(
+                  width: 40,
+                ),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Order placed",
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'ProductSans',
+                        ),
+                      ),
+                      Text(
+                        "Token booked successfully!",
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontFamily: 'ProductSans',
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Positioned(
+            bottom: 15,
+            left: 10,
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                Image.asset(
+                  "img/tick.png",
+                  height: 30,
+                  width: 30,
+                  color: Color.fromARGB(255, 255, 255, 255),
+                ),
+              ],
+            ),
+          ),
+        ],
+      )));
+}
+
+void snack_failed({
+  required BuildContext context,
+}) {
+  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      backgroundColor: Colors.transparent,
+      elevation: 150,
+      content: Stack(
+        children: [
+          Container(
+            padding: EdgeInsets.all(10),
+            height: 60,
+            decoration: BoxDecoration(
+                color: Color.fromARGB(255, 223, 40, 7),
+                borderRadius: BorderRadius.circular(12)),
+            child: Row(
+              children: [
+                const SizedBox(
+                  width: 40,
+                ),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Try again!",
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'ProductSans',
+                        ),
+                      ),
+                      Text(
+                        "Something went wrong!",
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontFamily: 'ProductSans',
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Positioned(
+            bottom: 15,
+            left: 10,
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                Image.asset(
+                  "img/cross.png",
+                  height: 30,
+                  width: 30,
+                  color: Color.fromARGB(255, 255, 255, 255),
+                ),
+              ],
+            ),
+          ),
+        ],
+      )));
 }

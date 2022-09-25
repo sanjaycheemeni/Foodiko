@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class FriendList extends StatefulWidget {
   final mailid;
@@ -15,6 +16,16 @@ class _FriendListState extends State<FriendList> {
   @override
   Widget build(BuildContext context) {
     Firebase.initializeApp();
+
+    DateTime now = DateTime.now();
+    String formattedDate = DateFormat('yyyy-MM-dd – kk:mm').format(now);
+
+    var ymd = DateFormat('yyyyMMdd').format(now);
+    var h = int.parse(DateFormat('kk').format(now).toString()) * 360;
+    var m = int.parse(DateFormat('mm').format(now).toString()) * 60;
+
+    // print(ymd.toString() + h.toString() + m.toString());
+    var v = int.parse(ymd.toString() + h.toString() + m.toString());
     try {
       return Scaffold(
         body: SafeArea(
@@ -76,7 +87,8 @@ class _FriendListState extends State<FriendList> {
                                       height: 40,
                                     ),
                                     subtitle: Text(
-                                      document['status'] == 'online'
+                                      (v - int.parse(document['last_time'])) <
+                                              1200
                                           ? 'in Canteen'
                                           : '',
                                       style: TextStyle(

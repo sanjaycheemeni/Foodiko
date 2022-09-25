@@ -36,7 +36,7 @@ class QRpage extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.only(top: 80),
-            child: Text('Order ID : 123456789'),
+            child: Text('ORDER ' + status),
           ),
           Padding(
             padding: const EdgeInsets.only(top: 5),

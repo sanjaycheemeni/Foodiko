@@ -4,18 +4,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:foodiko/screens/screen_qr.dart';
+import 'package:foodiko/screens/screen_admin_addmoney.dart';
 
-class MyOrder extends StatelessWidget {
+class Adminusers extends StatefulWidget {
   final mailid;
-  const MyOrder({
-    Key? key,
-    required this.mailid,
-  }) : super(key: key);
+  const Adminusers({Key? key, this.mailid}) : super(key: key);
+
+  @override
+  State<Adminusers> createState() => _AdminusersState();
+}
+
+class _AdminusersState extends State<Adminusers> {
+  Color main_clr = Color.fromARGB(255, 82, 119, 187);
 
   @override
   Widget build(BuildContext context) {
-    Color main_clr = Color.fromARGB(255, 82, 119, 187);
     Firebase.initializeApp();
     try {
       return Scaffold(
@@ -30,7 +33,7 @@ class MyOrder extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(35.0),
                   child: Text(
-                    'My Orders',
+                    'Users List',
                     style: TextStyle(
                       color: main_clr,
                       fontSize: 35,
@@ -43,8 +46,8 @@ class MyOrder extends StatelessWidget {
                 ),
                 StreamBuilder<QuerySnapshot>(
                     stream: FirebaseFirestore.instance
-                        .collection("Order")
-                        .orderBy('status', descending: true)
+                        .collection("User")
+                        .orderBy('name', descending: false)
                         .snapshots(),
                     builder: ((context, snapshot) {
                       try {
@@ -58,39 +61,44 @@ class MyOrder extends StatelessWidget {
                                 child: Card(
                                   elevation: 0,
                                   shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(15),
+                                    borderRadius: BorderRadius.circular(20),
                                   ),
                                   color: Color.fromARGB(255, 240, 240, 240),
-                                  child: (isMine(document['mailid'], mailid))
-                                      ? ListTile(
-                                          title: Text(document['name']),
-                                          subtitle: Text(
-                                            document['status'] == 'DELIVERED'
-                                                ? 'Already Delivered'
-                                                : '',
-                                            style: TextStyle(color: Colors.red),
-                                          ),
-                                          trailing: GestureDetector(
-                                            onTap: () {
-                                              Navigator.of(context).push(
-                                                  MaterialPageRoute(
-                                                      builder: (BuildContext
-                                                              bc) =>
-                                                          QRpage(
-                                                              id: document[
-                                                                  'tokenid'],
-                                                              status: document[
-                                                                  'status'])));
-                                            },
-                                            child: Image.asset(
-                                              'img/qrcode.png',
-                                              width: 25,
-                                              height: 25,
-                                              color: main_clr,
-                                              fit: BoxFit.fill,
-                                            ),
-                                          ))
-                                      : null,
+                                  child: ListTile(
+                                    title: Text(document['name']),
+                                    trailing: GestureDetector(
+                                      onTap: () {
+                                        Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                                builder: (BuildContext bc) =>
+                                                    AdminAddmoney(
+                                                      mailid:
+                                                          document['mailid'],
+                                                    )));
+                                      },
+                                      child: Text(
+                                        'Add Money',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Color.fromARGB(
+                                                255, 1, 140, 255)),
+                                      ),
+                                    ),
+                                    leading: Image.asset(
+                                      'img/user.png',
+                                      width: 40,
+                                      height: 40,
+                                    ),
+                                    subtitle: Text(
+                                      document['status'] == 'online'
+                                          ? 'in Canteen'
+                                          : '',
+                                      style: TextStyle(
+                                          color: document['status'] == 'online'
+                                              ? Colors.green
+                                              : Colors.red),
+                                    ),
+                                  ),
                                 ),
                               );
                             }).toList(),
@@ -119,9 +127,5 @@ class MyOrder extends StatelessWidget {
         )),
       );
     }
-  }
-
-  isMine(m, m1) {
-    return m == m1 ? true : false;
   }
 }

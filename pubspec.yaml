@@ -42,6 +42,7 @@ dependencies:
   firebase_database: ^9.1.4
   qr_flutter: ^4.0.0
   hive: ^2.2.3
+  qr_code_scanner: ^1.0.1
 
 
 dev_dependencies:

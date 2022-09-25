@@ -80,7 +80,7 @@ class _WalletPageState extends State<WalletPage> {
     final val = await getWallet();
     if (this.mounted) {
       setState(() {
-        balance = "Rs " + val! + ".0";
+        balance = "Rs " + val!.toString() + ".0";
       });
     }
 

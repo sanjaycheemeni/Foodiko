@@ -4,6 +4,7 @@ import 'dart:isolate';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
+import 'package:foodiko/screens/screen_admin_home.dart';
 import 'package:foodiko/screens/screen_home.dart';
 import 'package:foodiko/screens/screen_login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -84,6 +85,11 @@ class _SplashState extends State<Splash> {
           MaterialPageRoute(builder: (BuildContext bc) => LoginPage()));
     } else {
       print('home');
+      if (mid == 'admin@foodiko.com') {
+        Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (BuildContext bc) => AdminHome()));
+        return;
+      }
       Navigator.of(context).pushReplacement(MaterialPageRoute(
           builder: (BuildContext bc) => Homepage(
                 mail_id: mid!,

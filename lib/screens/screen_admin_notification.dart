@@ -25,8 +25,8 @@ class _AdminNotifyState extends State<AdminNotify> {
           child: Container(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          child: ListView(
+            physics: ClampingScrollPhysics(),
             children: [
               Padding(
                 padding: const EdgeInsets.only(left: 30, top: 40),
@@ -35,7 +35,7 @@ class _AdminNotifyState extends State<AdminNotify> {
                   style: TextStyle(
                       fontSize: 29,
                       fontWeight: FontWeight.bold,
-                      color: Color.fromARGB(255, 0, 0, 0)),
+                      color: main_clr),
                 ),
               ),
               SizedBox(
@@ -77,12 +77,36 @@ class _AdminNotifyState extends State<AdminNotify> {
                       ],
                     ),
                   ),
-                  TextField(
-                    onChanged: (value) {
-                      con = value;
-                    },
+                  Padding(
+                    //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
+                    padding: EdgeInsets.symmetric(horizontal: 15),
+                    child: Container(
+                      height: 50,
+                      decoration: BoxDecoration(
+                        color: Color.fromARGB(255, 221, 221, 221),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: TextField(
+                        keyboardType: TextInputType.text,
+                        cursorColor: Colors.white,
+                        style: TextStyle(color: Color.fromARGB(255, 8, 8, 8)),
+                        decoration: InputDecoration(
+                            hintStyle: TextStyle(
+                                color: Color.fromARGB(255, 179, 179, 179)),
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8.0),
+                                borderSide: BorderSide.none),
+                            filled: true,
+                            hintText: "Notification Message",
+                            fillColor: Color.fromARGB(255, 219, 219, 219)),
+                        onChanged: (String val) {
+                          con = val;
+                        },
+                      ),
+                    ),
                   ),
                   ElevatedButton(
+                    style: ElevatedButton.styleFrom(primary: main_clr),
                     onPressed: () {
                       updateValue(
                           colid: 'NoticeBoard',
@@ -93,6 +117,7 @@ class _AdminNotifyState extends State<AdminNotify> {
                     child: Text('Update Notice Board'),
                   ),
                   ElevatedButton(
+                    style: ElevatedButton.styleFrom(primary: main_clr),
                     onPressed: () {
                       updateValue(
                           colid: 'NoticeBoard',

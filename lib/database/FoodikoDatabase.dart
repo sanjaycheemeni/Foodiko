@@ -62,7 +62,7 @@ getUser(String mail) async {
   await Firebase.initializeApp();
   CollectionReference users = FirebaseFirestore.instance.collection('Users');
   final val = users.doc().get();
-  print(val.toString());
+  //print(val.toString());
 }
 
 createOrder(
@@ -73,6 +73,7 @@ createOrder(
 
     DateTime now = DateTime.now();
     String fd = DateFormat('yyyyMMddkkmm').format(now);
+    String t = DateFormat('dd-MM-yyyy, kk:mm').format(now);
 
     users.doc(fd + mailid).set({
       "foodid": foodid,
@@ -80,16 +81,20 @@ createOrder(
       "price": price,
       "name": fname,
       "status": "PENDING",
+      "time": t,
+      "user": await getNamebymail(mailid),
       "tokenid": fd + mailid
     });
+    print('order booked');
+    var bal = (double.parse(
+            await getValue(colid: 'User', docid: mailid, colname: 'balance')) -
+        double.parse(price));
 
-    users = FirebaseFirestore.instance.collection('User');
-    users.doc(mailid).update({
-      "balance": (double.parse(
-                  await getValue(colid: 'User', docid: mailid, colname: '')) -
-              double.parse(price))
-          .toString()
-    });
+    updateValue(
+        colid: 'User',
+        docid: mailid,
+        colname: 'balance',
+        value: bal.toString());
 
     // users.add({
     //   "reg_no": reg_no,

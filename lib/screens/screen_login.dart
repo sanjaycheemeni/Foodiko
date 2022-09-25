@@ -6,6 +6,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:foodiko/screens/screen_admin_home.dart';
 import 'package:foodiko/screens/screen_home.dart';
 import 'package:foodiko/screens/screen_register.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -261,6 +262,11 @@ class _LoginPageState extends State<LoginPage> {
       snack_success(context: context);
 
       Timer(Duration(seconds: 2), () {
+        if (emailid == 'admin@foodiko.com') {
+          Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (BuildContext bc) => AdminHome()));
+          return;
+        }
         Navigator.of(context).pushReplacement(MaterialPageRoute(
             builder: (BuildContext bc) => Homepage(
                   mail_id: emailid,

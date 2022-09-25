@@ -1,26 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/src/foundation/key.dart';
+import 'package:flutter/src/widgets/container.dart';
+import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:foodiko/database/FirebaseHive.dart';
-import 'package:foodiko/screens/screen_friends.dart';
-import 'package:foodiko/screens/screen_myorder.dart';
+import 'package:foodiko/screens/screen_admin_foodlist.dart';
+import 'package:foodiko/screens/screen_admin_notification.dart';
+import 'package:foodiko/screens/screen_admin_scanqr.dart';
+import 'package:foodiko/screens/screen_admin_users.dart';
+import 'package:foodiko/screens/screen_admin_vieworder.dart';
 import 'package:foodiko/screens/screen_order.dart';
-import 'package:foodiko/screens/screen_profile.dart';
-import 'package:foodiko/screens/screen_wallet.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-class Homepage extends StatefulWidget {
-  final String mail_id;
+import '../database/FirebaseHive.dart';
 
-  Homepage({Key? key, required String this.mail_id}) : super(key: key);
+class AdminHome extends StatefulWidget {
+  const AdminHome({Key? key}) : super(key: key);
 
   @override
-  State<Homepage> createState() => _HomepageState();
+  State<AdminHome> createState() => _AdminHomeState();
 }
 
-class _HomepageState extends State<Homepage> {
+class _AdminHomeState extends State<AdminHome> {
   String welcome_msg = "";
-  String n = "";
-  String notification_msg = "No Notification";
+
+  var notification_msg = "";
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +38,7 @@ class _HomepageState extends State<Homepage> {
     //var box =  Hive.openBox('testBox');
     // var str = box.get()
 
+    String welcome_msg = "";
     return WillPopScope(
       onWillPop: () async {
         //print('back press');
@@ -49,19 +52,19 @@ class _HomepageState extends State<Homepage> {
           foregroundColor: Color.fromARGB(255, 255, 255, 255),
           onPressed: () {
             // Respond to button press
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (BuildContext bc) => OrderPage(id: widget.mail_id)));
+            Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (BuildContext bc) => AdminScan()));
           },
           icon: Image.asset(
-            'img/book.png',
-            width: 50,
-            height: 55,
+            'img/qrcode.png',
+            width: 25,
+            height: 25,
             color: Colors.white,
             fit: BoxFit.fill,
           ),
           label: Text(
-            'BOOK',
-            style: TextStyle(fontWeight: FontWeight.bold),
+            'Scan Order',
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
           elevation: 2,
         ),
@@ -72,41 +75,24 @@ class _HomepageState extends State<Homepage> {
           child: ListView(
             physics: ClampingScrollPhysics(),
             children: [
+              SizedBox(
+                height: 20,
+              ),
               Container(
                 width: 100,
                 height: 50,
                 color: clr,
                 margin: EdgeInsets.only(left: 35, right: 35, top: 2),
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      SvgPicture.asset(
-                        "img/menu.svg",
-                        width: 15,
-                        height: 15,
-                        color: Color.fromARGB(255, 204, 204, 204),
-                      ),
-                      Text(
-                        "foodiko",
-                        style: TextStyle(
-                            fontSize: 30,
-                            fontWeight: FontWeight.bold,
-                            color: main_clr),
-                      ),
-                      new GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (BuildContext bc) => ProfilePage(
-                                    name: n,
-                                    mail_id: widget.mail_id,
-                                  )));
-                        },
-                        child: SvgPicture.asset("img/user_round.svg",
-                            width: 20,
-                            height: 20,
-                            color: Color.fromARGB(255, 204, 204, 204)),
-                      )
-                    ]),
+                child:
+                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  Text(
+                    "Admin panel",
+                    style: TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                        color: main_clr),
+                  ),
+                ]),
               ),
               SizedBox(
                 height: 20,
@@ -159,10 +145,17 @@ class _HomepageState extends State<Homepage> {
                     borderRadius: BorderRadius.circular(10)),
               ),
               //===================
-              tab(img: "img/wallet.svg", name: "Wallet", context: context),
-              tab(img: "img/menu.svg", name: "My Orders", context: context),
-              tab(img: "img/friends.svg", name: "My Friends", context: context),
-              tab(img: "img/review.svg", name: "Reviews", context: context),
+              tab(img: "img/wallet.svg", name: "Add Money", context: context),
+              tab(img: "img/menu.svg", name: "View Orders", context: context),
+              //tab(img: "img/friends.svg", name: "Users", context: context),
+              tab(
+                  img: "img/menu.svg",
+                  name: "Update Food List",
+                  context: context),
+              tab(
+                  img: "img/chat.svg",
+                  name: "Update Notification",
+                  context: context),
             ],
           ),
         ),
@@ -176,21 +169,21 @@ class _HomepageState extends State<Homepage> {
       required BuildContext context}) {
     return GestureDetector(
       onTap: () {
-        if (name == "My Friends") {
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (BuildContext bc) => FriendList(
-                    mailid: widget.mail_id,
-                  )));
-        }
-        if (name == "Wallet") {
+        if (name == "Add Money") {
           Navigator.of(context).push(
-              MaterialPageRoute(builder: (BuildContext bc) => WalletPage()));
+              MaterialPageRoute(builder: (BuildContext bc) => Adminusers()));
         }
-        if (name == "My Orders") {
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (BuildContext bc) => MyOrder(
-                    mailid: widget.mail_id,
-                  )));
+        if (name == "View Orders") {
+          Navigator.of(context).push(
+              MaterialPageRoute(builder: (BuildContext bc) => AdminOrder()));
+        }
+        if (name == "Update Food List") {
+          Navigator.of(context).push(
+              MaterialPageRoute(builder: (BuildContext bc) => AdminFoodlist()));
+        }
+        if (name == "Update Notification") {
+          Navigator.of(context).push(
+              MaterialPageRoute(builder: (BuildContext bc) => AdminNotify()));
         }
       },
       child: Container(
@@ -219,7 +212,7 @@ class _HomepageState extends State<Homepage> {
             color: Color.fromARGB(255, 3, 14, 71),
           ),
           SizedBox(
-            width: 100,
+            width: 50,
           ),
           Text(
             name,
@@ -236,10 +229,12 @@ class _HomepageState extends State<Homepage> {
   Future<void> welcome() async {
     //setOnline();
     final name = await getName('a@b.com');
-    n = name;
-    setState(() {
-      welcome_msg = "hello " + name + "!";
-    });
+    //n = name;
+    if (this.mounted) {
+      setState(() {
+        welcome_msg = "hello " + name + "!";
+      });
+    }
     return;
   }
 
@@ -251,23 +246,5 @@ class _HomepageState extends State<Homepage> {
       });
     }
     return;
-  }
-
-  Future<void> setOffline() async {
-    updateValue(
-        colid: 'User',
-        docid: widget.mail_id,
-        colname: 'status',
-        value: 'offline');
-  }
-
-  Future<void> setOnline() async {
-    if (this.mounted) {
-      updateValue(
-          colid: 'User',
-          docid: widget.mail_id,
-          colname: 'status',
-          value: 'online');
-    }
   }
 }
